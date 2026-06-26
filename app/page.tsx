@@ -1,10 +1,7 @@
 "use client";
+import Link from "next/link";
 
 export default function Home() {
-  function handleLogin() {
-    alert("Login");
-  }
-
   return (
     <>
       <div className="relative flex min-h-full flex-1 flex-col items-center justify-center overflow-hidden bg-[#090909]">
@@ -19,13 +16,15 @@ export default function Home() {
             <span className="text-white/35">3000</span>
           </h1>
 
-          <button
-            type="button"
-            onClick={handleLogin}
-            className="cursor-pointer rounded-full border border-white/12 bg-white/[0.03] px-11 py-3.5 text-[0.72rem] font-medium uppercase tracking-[0.28em] text-white/85 transition-all duration-300 hover:border-white/25 hover:bg-white/[0.07] hover:text-white hover:shadow-[0_0_48px_rgba(255,255,255,0.05)] active:scale-[0.98]"
-          >
-            Login
-          </button>
+          <Link href="/login">
+            {" "}
+            <button
+              type="button"
+              className="cursor-pointer rounded-full border border-white/12 bg-white/[0.03] px-11 py-3.5 text-[0.72rem] font-medium uppercase tracking-[0.28em] text-white/85 transition-all duration-300 hover:border-white/25 hover:bg-white/[0.07] hover:text-white hover:shadow-[0_0_48px_rgba(255,255,255,0.05)] active:scale-[0.98]"
+            >
+              Login
+            </button>
+          </Link>
         </main>
       </div>
 
