@@ -1,7 +1,11 @@
 "use client";
+
 import Link from "next/link";
 
 export default function Home() {
+
+
+
   return (
     <>
       <div className="relative flex min-h-full flex-1 flex-col items-center justify-center overflow-hidden bg-[#090909]">
@@ -25,6 +29,7 @@ export default function Home() {
               Login
             </button>
           </Link>
+
         </main>
       </div>
 
