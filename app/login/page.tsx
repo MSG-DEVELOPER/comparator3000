@@ -3,11 +3,17 @@
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
+interface dataType{
+email:string,
+pass:string
+
+}
+
 function Page() {
   const router = useRouter();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<dataType>();
 
-  async function validar(data) {
+  async function validar(data:dataType) {
     const response = await fetch("/api/login", {
       method: "POST",
       headers: {
