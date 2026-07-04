@@ -1,17 +1,29 @@
-import {query} from "@/lib/db"
+import bcrypt from "bcrypt";
+import { query } from "@/lib/db";
 
-export async function POST (request){
+export async function POST(request) {
+  const data = await request.json();
+  const { email, pass } = data;
 
-  const data =await request.json(); 
-  const {email} = data;
+  const result = await query(
+    "SELECT * FROM users WHERE email = $1",
+    [email]
+  );
 
-  const result=await query("SELECT * FROM users WHERE email = $1",[email]);
-
-  if (result.rows.length !== 0 ){
-    return Response.json({mensage:"okey cara de pato",succes:true})
-  }else{
-    return Response.json({succes:false})
+  if (result.rows.length === 0) {
+    return Response.json({ succes: false });
   }
-//falta
 
+  const usuario = result.rows[0];
+
+  const coincide = await bcrypt.compare(
+    pass,
+    usuario.password
+  );
+
+  if (coincide) {
+    return Response.json({ succes: true });
+  }
+
+  return Response.json({ succes: false });
 }
