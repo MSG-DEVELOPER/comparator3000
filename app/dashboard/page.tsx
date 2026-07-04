@@ -2,6 +2,7 @@
 //se ejecuta en el servidor como su nombre indica , de ahi que la url sea absoluta
 
 import { query } from "@/lib/db";
+import Link from "next/link"
 
 interface productoType{
   name:string,
@@ -35,7 +36,8 @@ async function Dashboard() {
 
         <div className="space-y-3">
           {productos.map((item: productoType) => (
-            <button
+            <Link
+            href={`/product/${item.id}`}
               key={item.id}
               className="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-left transition hover:border-white/20 hover:bg-white/10"
             >
@@ -44,7 +46,7 @@ async function Dashboard() {
               </span>
 
               <span className="text-lg text-white/30">›</span>
-            </button>
+            </Link>
           ))}
         </div>
       </div>
