@@ -12,9 +12,7 @@ interface productoType{
 async function Dashboard() {
   const data = await query("SELECT * from products");
   const productos = data.rows;
-  console.log(productos[0].name);
-  console.log(productos[0]);
-  console.log( productos);
+ 
 
 
   return (
