@@ -27,7 +27,7 @@ async function Dashboard() {
         <h1 className="mb-2 text-3xl font-light tracking-tight text-white">
           Productos
         </h1>
-
+       <Link href={"/product/new"}>➕</Link>
         <p className="mb-8 text-sm text-white/40">
           Selecciona un producto para comparar precios.
         </p>
