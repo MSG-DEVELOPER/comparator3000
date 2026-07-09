@@ -56,7 +56,7 @@ function NewProduct() {
     getData();
   }, []);
 
-  function validateForm(data: dataType) {
+  async function validateForm(data: dataType) {
     if (!selectedProduct || !selectedSupermarket) {
       return;
     }
@@ -68,6 +68,17 @@ function NewProduct() {
     };
 
     console.log(finalData);
+     
+     await fetch("/api/postPrice" , {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(finalData),
+    })
+
+
+
   }
 
   return (
@@ -87,7 +98,7 @@ function NewProduct() {
               type="text"
               placeholder="Producto"
               readOnly
-              {...register("nombre")}
+             
               value={productName}
               onFocus={() => setOpenProducts(true)}
               onBlur={() => {
