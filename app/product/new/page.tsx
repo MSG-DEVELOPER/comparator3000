@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import Modal from "./components/Modal";
 
 interface ProductType {
   id: number;
@@ -39,6 +40,8 @@ function NewProduct() {
   const [productName, setProductName] = useState("Producto");
   const [supermarketName, setSupermarketName] = useState("Supermercado");
 
+  const [modalProductOpen,setModalProductOpen] = useState(false)
+
   const { register, handleSubmit } = useForm<dataType>();
   useEffect(() => {
     async function getData() {
@@ -68,17 +71,14 @@ function NewProduct() {
     };
 
     console.log(finalData);
-     
-     await fetch("/api/postPrice" , {
+
+    await fetch("/api/postPrice", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(finalData),
-    })
-
-
-
+    });
   }
 
   return (
@@ -98,7 +98,6 @@ function NewProduct() {
               type="text"
               placeholder="Producto"
               readOnly
-             
               value={productName}
               onFocus={() => setOpenProducts(true)}
               onBlur={() => {
@@ -111,6 +110,13 @@ function NewProduct() {
 
             {openProducts && (
               <div className="absolute left-0 top-full z-20 mt-2 w-full overflow-hidden rounded-xl border border-white/10 bg-[#111] shadow-xl">
+               
+                <button
+                  onClick={()=>setModalProductOpen(true)}
+                  className="italic block border-b border-white/10 bg-white/5 px-4 py-3 font-medium text-white transition hover:bg-white/10"
+                >
+                  ➕ Nuevo producto
+                </button>
                 {productsList.map((item) => (
                   <div
                     key={item.id}
@@ -127,6 +133,8 @@ function NewProduct() {
               </div>
             )}
           </div>
+
+          {modalProductOpen && < Modal/>}
 
           {/* SUPERMERCADO */}
           <div className="relative mb-6">
