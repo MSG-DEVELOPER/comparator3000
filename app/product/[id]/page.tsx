@@ -32,12 +32,12 @@ async function Page({ params }: PageProps) {
       ON supermarkets.id = prices.supermarket_id
     WHERE prices.product_id = $1
     `,
-    [id]
+    [id],
   );
 
   const dataProductName = await query(
     "SELECT * FROM products WHERE id = $1",
-    [id]
+    [id],
   );
 
   const name = dataProductName.rows[0]?.name ?? "Producto";
@@ -46,9 +46,7 @@ async function Page({ params }: PageProps) {
 
   const enrichedProducts = products.map((item) => {
     const pricePer100g =
-      item.unit === "g"
-        ? (item.price / item.quantity) * 100
-        : null;
+      item.unit === "g" ? (item.price / item.quantity) * 100 : null;
 
     return {
       ...item,
@@ -57,30 +55,39 @@ async function Page({ params }: PageProps) {
   });
 
   return (
-    <div className="min-h-screen bg-[#090909] px-6 py-8">
-      <Link
-        href="/dashboard"
-        className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-xl text-white transition hover:border-white/20 hover:bg-white/10"
-      >
-        ←
-      </Link>
+    <div className="page-shell">
+      <main className="page-container page-container--wide animate-fade-up">
+        <Link
+          href="/dashboard"
+          className="btn-ghost btn-icon mb-6"
+          title="Volver al panel"
+        >
+          ←
+        </Link>
 
-      <h1 className="mt-8 text-3xl font-light text-white">
-        {name}
-      </h1>
+        <div className="mb-8">
+          <p className="section-label mb-2">Comparativa</p>
+          <h1 className="page-title">{name}</h1>
+          <p className="page-subtitle">
+            {enrichedProducts.length > 0
+              ? `${enrichedProducts.length} precio${enrichedProducts.length === 1 ? "" : "s"} registrado${enrichedProducts.length === 1 ? "" : "s"}`
+              : "Sin precios registrados todavía."}
+          </p>
+        </div>
 
-      <div className="mt-6 space-y-3">
-        {enrichedProducts.map((item) => (
-          <PriceCard
-            key={item.id}
-            supermarketName={item.supermarket_name}
-            price={item.price}
-            quantity={item.quantity}
-            unit={item.unit}
-            pricePer100g={item.pricePer100g}
-          />
-        ))}
-      </div>
+        <div className="space-y-3">
+          {enrichedProducts.map((item) => (
+            <PriceCard
+              key={item.id}
+              supermarketName={item.supermarket_name}
+              price={item.price}
+              quantity={item.quantity}
+              unit={item.unit}
+              pricePer100g={item.pricePer100g}
+            />
+          ))}
+        </div>
+      </main>
     </div>
   );
 }

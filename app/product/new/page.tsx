@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Modal from "./components/Modal";
 
 interface ProductType {
@@ -40,8 +41,7 @@ function NewProduct() {
   const [productName, setProductName] = useState("Producto");
   const [supermarketName, setSupermarketName] = useState("Supermercado");
 
-    const [modalProductOpen,setModalProductOpen] = useState(false)
-
+  const [modalProductOpen, setModalProductOpen] = useState(false);
 
   const { register, handleSubmit } = useForm<dataType>();
   useEffect(() => {
@@ -83,18 +83,31 @@ function NewProduct() {
   }
 
   return (
-    <div className="min-h-screen bg-[#090909] px-6 py-10">
-      <main className="mx-auto w-full max-w-md">
+    <div className="page-shell">
+      <main className="page-container animate-fade-up">
+        <Link
+          href="/dashboard"
+          className="btn-ghost btn-icon mb-6"
+          title="Volver al panel"
+        >
+          ←
+        </Link>
+
         <form
           onSubmit={handleSubmit(validateForm)}
-          className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur"
+          className="glass-card"
         >
-          <h1 className="mb-8 text-3xl font-light tracking-tight text-white">
-            Añadir precio
-          </h1>
+          <div className="mb-8">
+            <p className="section-label mb-2">Nuevo registro</p>
+            <h1 className="page-title">Añadir precio</h1>
+            <p className="page-subtitle">
+              Registra un precio para un producto y supermercado.
+            </p>
+          </div>
 
           {/* PRODUCTO */}
-          <div className="relative mb-6">
+          <div className="relative mb-5">
+            <label className="section-label">Producto</label>
             <input
               type="text"
               placeholder="Producto"
@@ -106,22 +119,22 @@ function NewProduct() {
                   setOpenProducts(false);
                 }, 150);
               }}
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 outline-none transition focus:border-white/30"
+              className="input-field"
             />
 
             {openProducts && (
-              <div className="absolute left-0 top-full z-20 mt-2 w-full overflow-hidden rounded-xl border border-white/10 bg-[#111] shadow-xl">
-               
+              <div className="dropdown-panel">
                 <button
-                  onClick={()=>setModalProductOpen(true)}
-                  className="italic block border-b border-white/10 bg-white/5 px-4 py-3 font-medium text-white transition hover:bg-white/10"
+                  type="button"
+                  onClick={() => setModalProductOpen(true)}
+                  className="dropdown-item dropdown-item--action block w-full text-left"
                 >
-                  ➕ Nuevo producto
+                  + Nuevo producto
                 </button>
                 {productsList.map((item) => (
                   <div
                     key={item.id}
-                    className="cursor-pointer px-4 py-3 text-white/80 transition hover:bg-white/10"
+                    className="dropdown-item"
                     onClick={() => {
                       setSelectedProduct(item);
                       setProductName(item.name);
@@ -135,10 +148,9 @@ function NewProduct() {
             )}
           </div>
 
-
-     
           {/* SUPERMERCADO */}
-          <div className="relative mb-6">
+          <div className="relative mb-5">
+            <label className="section-label">Supermercado</label>
             <input
               type="text"
               placeholder="Supermercado"
@@ -150,11 +162,11 @@ function NewProduct() {
                   setOpenSupermarkets(false);
                 }, 150);
               }}
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 outline-none transition focus:border-white/30"
+              className="input-field"
             />
 
             {openSupermarkets && (
-              <div className="absolute left-0 top-full z-20 mt-2 w-full overflow-hidden rounded-xl border border-white/10 bg-[#111] shadow-xl">
+              <div className="dropdown-panel">
                 {supermarketsList.map((item) => (
                   <div
                     key={item.id}
@@ -163,7 +175,7 @@ function NewProduct() {
                       setSupermarketName(item.name);
                       setOpenSupermarkets(false);
                     }}
-                    className="cursor-pointer px-4 py-3 text-white/80 transition hover:bg-white/10"
+                    className="dropdown-item"
                   >
                     {item.name}
                   </div>
@@ -173,78 +185,80 @@ function NewProduct() {
           </div>
 
           {/* PRECIO */}
-          <input
-            type="number"
-            step="0.01"
-            placeholder="Precio (€)"
-            {...register("price")}
-            className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 outline-none transition focus:border-white/30"
-          />
-
-          {/* CANTIDAD + UNIDAD */}
-          <div className="mt-6 flex gap-3">
+          <div className="mb-5">
+            <label className="section-label">Precio</label>
             <input
               type="number"
               step="0.01"
-              placeholder="Cantidad"
-              {...register("quantity")}
-              className="flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 outline-none transition focus:border-white/30"
+              inputMode="decimal"
+              placeholder="Precio (€)"
+              {...register("price")}
+              className="input-field"
             />
+          </div>
 
-            <select
-              {...register("unit")}
-              className="w-28 rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-white outline-none transition focus:border-white/30"
-            >
-              <option value="" className="bg-[#111]">
-                Unidad
-              </option>
+          {/* CANTIDAD + UNIDAD */}
+          <div className="field-row mb-5">
+            <div className="flex-1">
+              <label className="section-label">Cantidad</label>
+              <input
+                type="number"
+                step="0.01"
+                inputMode="decimal"
+                placeholder="Cantidad"
+                {...register("quantity")}
+                className="input-field"
+              />
+            </div>
 
-              <option value="g" className="bg-[#111]">
-                g
-              </option>
-
-              <option value="kg" className="bg-[#111]">
-                kg
-              </option>
-
-              <option value="ml" className="bg-[#111]">
-                ml
-              </option>
-
-              <option value="l" className="bg-[#111]">
-                l
-              </option>
-
-              <option value="ud" className="bg-[#111]">
-                ud
-              </option>
-            </select>
+            <div className="field-row__unit">
+              <label className="section-label">Unidad</label>
+              <select {...register("unit")} className="input-field">
+                <option value="" className="bg-[#111]">
+                  —
+                </option>
+                <option value="g" className="bg-[#111]">
+                  g
+                </option>
+                <option value="kg" className="bg-[#111]">
+                  kg
+                </option>
+                <option value="ml" className="bg-[#111]">
+                  ml
+                </option>
+                <option value="l" className="bg-[#111]">
+                  l
+                </option>
+                <option value="ud" className="bg-[#111]">
+                  ud
+                </option>
+              </select>
+            </div>
           </div>
 
           {/* PNE */}
-          <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.02] p-4">
-            <label className="flex cursor-pointer items-center gap-3 text-sm text-white/80">
-              <input
-                type="checkbox"
-                {...register("PNE")}
-                className="h-4 w-4 accent-white"
-              />
-
+          <div className="checkbox-block mb-6">
+            <label>
+              <input type="checkbox" {...register("PNE")} />
               <div>
-                <p className="text-white">Peso neto escurrido (PNE)</p>
-
-                <p className="mt-1 text-xs text-white/40">
+                <p className="text-base text-white">
+                  Peso neto escurrido (PNE)
+                </p>
+                <p className="mt-1 text-sm leading-snug text-white/40">
                   Usar el peso real del alimento sin líquido
                 </p>
               </div>
             </label>
-            <button type="submit" className="text-white border">
-              CREAR
-            </button>
           </div>
+
+          <button type="submit" className="btn-primary btn-primary--full">
+            Crear
+          </button>
         </form>
 
-             {modalProductOpen && < Modal  clickBotonX={()=>setModalProductOpen(false)}   />}
+        {modalProductOpen && (
+          <Modal clickBotonX={() => setModalProductOpen(false)} />
+        )}
       </main>
     </div>
   );

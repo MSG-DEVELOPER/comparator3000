@@ -2,18 +2,18 @@
 
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
 
-interface dataType{
-email:string,
-pass:string
-
+interface dataType {
+  email: string;
+  pass: string;
 }
 
 function Page() {
   const router = useRouter();
   const { register, handleSubmit } = useForm<dataType>();
 
-  async function validar(data:dataType) {
+  async function validar(data: dataType) {
     const response = await fetch("/api/login", {
       method: "POST",
       headers: {
@@ -30,43 +30,60 @@ function Page() {
   }
 
   return (
-    <div className="relative flex min-h-full flex-1 items-center justify-center overflow-hidden bg-[#090909] px-6">
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-[42%] h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.04] blur-[120px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#090909_72%)]" />
-      </div>
-
-      <main className="relative z-10 w-full max-w-md">
+    <div className="page-shell page-container--center">
+      <main className="animate-fade-up relative z-10 w-full">
         <form
           onSubmit={handleSubmit(validar)}
-          className="rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur"
+          className="glass-card glass-card--lg"
         >
-          <h1 className="mb-8 text-center text-3xl font-light tracking-tight text-white">
-            Login
-          </h1>
+          <div className="mb-6 text-center sm:mb-8">
+            <p className="section-label mb-3">Acceso</p>
+            <h1 className="page-title">Login</h1>
+            <p className="page-subtitle">
+              Introduce tus credenciales para continuar.
+            </p>
+          </div>
 
-          <div className="space-y-5">
-            <input
-              {...register("email")}
-              type="email"
-              placeholder="Email"
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 outline-none transition focus:border-white/30"
-            />
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="email" className="section-label">
+                Email
+              </label>
+              <input
+                id="email"
+                {...register("email")}
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                placeholder="tu@email.com"
+                className="input-field"
+              />
+            </div>
 
-            <input
-              {...register("pass")}
-              type="password"
-              placeholder="Password"
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 outline-none transition focus:border-white/30"
-            />
+            <div>
+              <label htmlFor="pass" className="section-label">
+                Contraseña
+              </label>
+              <input
+                id="pass"
+                {...register("pass")}
+                type="password"
+                autoComplete="current-password"
+                placeholder="••••••••"
+                className="input-field"
+              />
+            </div>
 
-            <button
-              type="submit"
-              className="mt-2 w-full cursor-pointer rounded-xl border border-white/12 bg-white/[0.03] py-3 text-xs font-medium uppercase tracking-[0.25em] text-white/85 transition hover:border-white/25 hover:bg-white/[0.07]"
-            >
-              Login
+            <button type="submit" className="btn-primary btn-primary--full mt-2">
+              Entrar
             </button>
           </div>
+
+          <p className="mt-5 text-center sm:mt-6">
+            <Link href="/" className="btn-link">
+              ← Volver al inicio
+            </Link>
+          </p>
         </form>
       </main>
     </div>
