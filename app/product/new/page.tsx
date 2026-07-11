@@ -123,7 +123,11 @@ function NewProduct() {
             />
 
             {openProducts && (
-              <div className="dropdown-panel">
+              <div
+                className="dropdown-panel scroll-y"
+                onMouseDown={(e) => e.preventDefault()}
+                onWheel={(e) => e.stopPropagation()}
+              >
                 <button
                   type="button"
                   onClick={() => setModalProductOpen(true)}
@@ -166,7 +170,11 @@ function NewProduct() {
             />
 
             {openSupermarkets && (
-              <div className="dropdown-panel">
+              <div
+                className="dropdown-panel scroll-y"
+                onMouseDown={(e) => e.preventDefault()}
+                onWheel={(e) => e.stopPropagation()}
+              >
                 {supermarketsList.map((item) => (
                   <div
                     key={item.id}

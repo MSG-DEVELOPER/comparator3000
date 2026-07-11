@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 
 interface clickType {
@@ -12,13 +13,15 @@ interface dataType {
 }
 
 function Modal({ clickBotonX }: clickType) {
+  const [mounted, setMounted] = useState(false);
   const { register, handleSubmit } = useForm<dataType>();
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
+    setMounted(true);
+    document.body.classList.add("modal-open");
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.classList.remove("modal-open");
     };
   }, []);
 
@@ -34,15 +37,28 @@ function Modal({ clickBotonX }: clickType) {
     });
   }
 
-  return (
+  if (!mounted) {
+    return null;
+  }
+
+  return createPortal(
     <div className="modal-backdrop">
       <div className="modal-overlay" onClick={clickBotonX} />
 
-      <div className="modal-panel animate-fade-up">
+      <div
+        className="modal-panel scroll-y animate-fade-up"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        onWheel={(e) => e.stopPropagation()}
+      >
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <p className="section-label mb-2">Nuevo</p>
-            <h2 className="text-xl font-light tracking-tight text-white">
+            <h2
+              id="modal-title"
+              className="text-xl font-light tracking-tight text-white"
+            >
               Crear producto
             </h2>
           </div>
@@ -75,7 +91,8 @@ function Modal({ clickBotonX }: clickType) {
           </button>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
