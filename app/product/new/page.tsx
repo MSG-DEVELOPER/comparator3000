@@ -40,7 +40,8 @@ function NewProduct() {
   const [productName, setProductName] = useState("Producto");
   const [supermarketName, setSupermarketName] = useState("Supermercado");
 
-  const [modalProductOpen,setModalProductOpen] = useState(false)
+    const [modalProductOpen,setModalProductOpen] = useState(false)
+
 
   const { register, handleSubmit } = useForm<dataType>();
   useEffect(() => {
@@ -134,8 +135,8 @@ function NewProduct() {
             )}
           </div>
 
-          {modalProductOpen && < Modal/>}
 
+     
           {/* SUPERMERCADO */}
           <div className="relative mb-6">
             <input
@@ -242,6 +243,8 @@ function NewProduct() {
             </button>
           </div>
         </form>
+
+             {modalProductOpen && < Modal  clickBotonX={()=>setModalProductOpen(false)}   />}
       </main>
     </div>
   );
